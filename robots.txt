@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://dzoyox.github.io/bcgame-mexico-guide/sitemap.xml

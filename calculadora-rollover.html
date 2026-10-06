@@ -3,14 +3,16 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Calculadora de rollover de bonos | BC.GAME México</title>
-  <meta name="description" content="Calcula cuánto tendrías que apostar para completar el rollover de un bono de casino. Herramienta educativa para usuarios adultos en México.">
+  <meta name="description" content="Calculadora de rollover en MXN: compara bono, depósito, multiplicador y contribución del juego. Incluye fórmula y ejemplos claros para México.">
   <link rel="canonical" href="https://dzoyox.github.io/bcgame-mexico-guide/calculadora-rollover.html">
-  <meta name="robots" content="index,follow"><meta name="theme-color" content="#07110d"><link rel="stylesheet" href="styles.css?v=2">
+  <meta name="robots" content="index,follow"><meta name="theme-color" content="#07110d"><link rel="stylesheet" href="styles.css?v=3">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de rollover de bonos","url":"https://dzoyox.github.io/bcgame-mexico-guide/calculadora-rollover.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"es-MX","isAccessibleForFree":true,"dateModified":"2026-10-06"}</script>
 </head>
 <body>
   <header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav><a href="index.html">Inicio</a><a href="retiros-bc-game-mexico.html">Retiros</a><a href="provably-fair-bc-game.html">Provably Fair</a></nav></header>
   <main class="article-shell">
     <nav class="article-nav"><a href="index.html">← Inicio</a><a href="retiros-bc-game-mexico.html">Guía de retiro</a></nav>
+    <div class="breadcrumbs"><a href="index.html">Inicio</a> › Calculadora de rollover</div>
     <p class="eyebrow">HERRAMIENTA GRATUITA · 18+</p>
     <h1>Calculadora de rollover</h1>
     <p class="article-intro">Introduce las condiciones exactas que ves en la promoción. La calculadora estima el volumen total de apuesta, no las pérdidas ni las ganancias.</p>
@@ -18,19 +20,22 @@
       <label>Depósito (MXN)<input id="deposit" type="number" min="0" step="1" value="500"></label>
       <label>Bono recibido (MXN)<input id="bonus" type="number" min="0" step="1" value="500"></label>
       <label>Multiplicador de rollover<input id="rollover" type="number" min="0" step="1" value="20"></label>
+      <label>Contribución del juego (%)<input id="contribution" type="number" min="1" max="100" step="1" value="100"></label>
       <label>Base del cálculo<select id="base"><option value="bonus">Solo el bono</option><option value="both">Depósito + bono</option></select></label>
       <div class="result">Volumen estimado de apuesta<strong id="result">$10,000 MXN</strong></div>
     </div>
     <div class="notice"><strong>Importante:</strong> apostar ese volumen no garantiza completar todos los requisitos. Algunos juegos aportan menos del 100%, pueden existir límites de apuesta, fechas de expiración y topes de retiro.</div>
-    <h2>Cómo interpretar el resultado</h2>
-    <p>Si el bono es de $500 MXN y el rollover es 20× calculado solo sobre el bono, el volumen indicado es $10,000 MXN. Si la base incluye depósito y bono, sería $20,000 MXN. Confirma siempre cuál fórmula aparece en los términos reales.</p>
+    <h2 id="formula">Cómo interpretar el resultado</h2>
+    <p>La fórmula usada es: <strong>base × multiplicador ÷ contribución</strong>. Si el bono es de $500 MXN y el rollover es 20× calculado solo sobre el bono, el volumen indicado es $10,000 MXN con una contribución del 100%. Si el juego aporta solo 20%, el volumen equivalente sube a $50,000 MXN.</p>
+    <table class="comparison"><thead><tr><th>Ejemplo</th><th>Cálculo</th><th>Volumen</th></tr></thead><tbody><tr><td>Bono $500, 20×, aporte 100%</td><td>500 × 20 ÷ 1</td><td>$10,000 MXN</td></tr><tr><td>Depósito + bono de $500, 20×</td><td>1,000 × 20 ÷ 1</td><td>$20,000 MXN</td></tr><tr><td>Bono $500, 20×, aporte 20%</td><td>500 × 20 ÷ 0.2</td><td>$50,000 MXN</td></tr></tbody></table>
     <h2>Qué revisar además del número</h2>
     <ul><li>Juegos que contribuyen al rollover y su porcentaje.</li><li>Apuesta máxima permitida mientras el bono está activo.</li><li>Fecha de expiración y retiro máximo.</li><li>Consecuencias de cancelar el bono.</li></ul>
+    <div class="sources"><h2>Fuente y revisión</h2><p>Concepto contrastado con la explicación oficial de BC.GAME sobre requisitos de rollover. Las reglas concretas de cada promoción prevalecen sobre esta calculadora.</p><p><a href="https://help.bc.game/en/articles/10750639-rollover-explained" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: Rollover Explained</a></p><p>Revisado el <time datetime="2026-10-06">6 de octubre de 2026</time>.</p></div>
   </main>
   <footer><p><strong>18+ · Juega responsablemente.</strong> Herramienta educativa; no garantiza resultados.</p></footer>
   <script>
-    const ids=['deposit','bonus','rollover','base'];
-    const calculate=()=>{const d=Number(document.querySelector('#deposit').value)||0;const b=Number(document.querySelector('#bonus').value)||0;const r=Number(document.querySelector('#rollover').value)||0;const base=document.querySelector('#base').value==='both'?d+b:b;document.querySelector('#result').textContent=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(base*r)};
+    const ids=['deposit','bonus','rollover','contribution','base'];
+    const calculate=()=>{const d=Number(document.querySelector('#deposit').value)||0;const b=Number(document.querySelector('#bonus').value)||0;const r=Number(document.querySelector('#rollover').value)||0;const c=Math.min(100,Math.max(1,Number(document.querySelector('#contribution').value)||100))/100;const base=document.querySelector('#base').value==='both'?d+b:b;document.querySelector('#result').textContent=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(base*r/c)};
     ids.forEach(id=>document.querySelector('#'+id).addEventListener('input',calculate));calculate();
   </script>
 </body></html>

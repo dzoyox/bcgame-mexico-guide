@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analizador privado de términos de bonos de casino</title>
+  <meta name="description" content="Pega los términos de un bono y localiza rollover, apuesta máxima, caducidad, retiro máximo, contribución, juegos excluidos, KYC y cancelación. Todo queda en tu navegador.">
+  <link rel="canonical" href="https://dzoyox.github.io/bcgame-mexico-guide/analizador-terminos-bono.html">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#07110d">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=7">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Analizador privado de términos de bonos","url":"https://dzoyox.github.io/bcgame-mexico-guide/analizador-terminos-bono.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","inLanguage":"es-MX","isAccessibleForFree":true,"dateModified":"2026-10-13","featureList":["Detección de rollover","Apuesta máxima","Caducidad","Tope de retiro","Contribución de juegos","KYC","Análisis local"]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿El texto se envía a un servidor?","acceptedAnswer":{"@type":"Answer","text":"No. El análisis se ejecuta localmente en el navegador y el texto no se transmite."}},{"@type":"Question","name":"¿Que una condición no sea detectada significa que no existe?","acceptedAnswer":{"@type":"Answer","text":"No. Puede estar redactada de otra forma o encontrarse en otra página. Siempre debe leerse el documento completo."}}]}]}</script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="calculadora-rollover.html">Calculadora</a><a href="planificador-limites-juego.html">Límites</a></nav></header>
+  <main class="article-shell">
+    <nav class="article-nav" aria-label="Navegación secundaria"><a href="index.html">← Inicio</a><a href="calculadora-rollover.html">Calcular coste del bono</a></nav>
+    <div class="breadcrumbs"><a href="index.html">Inicio</a> › Analizador de términos</div>
+    <p class="eyebrow">ANÁLISIS LOCAL · ESPAÑOL E INGLÉS · 18+</p>
+    <h1>Encuentra las condiciones que cambian el valor de un bono</h1>
+    <p class="article-intro">Pega el texto completo de la promoción. El analizador busca nueve condiciones importantes y muestra la frase donde las encontró.</p>
+    <p class="reviewed">Revisado el <time datetime="2026-10-13">13 de octubre de 2026</time>.</p>
+
+    <section class="tool-panel" aria-labelledby="analizador">
+      <h2 id="analizador">Texto de las condiciones</h2>
+      <label for="termsText">Términos y condiciones del bono</label>
+      <textarea id="termsText" class="analyzer-input" rows="12" spellcheck="false" placeholder="Pega aquí el texto completo. No incluyas nombre, correo, teléfono, dirección, documentos ni datos de pago."></textarea>
+      <div class="input-meta"><span id="charCount">0 caracteres</span><button id="loadExample" class="text-button" type="button">Cargar ejemplo ficticio</button></div>
+      <div class="tool-actions">
+        <button class="button primary" id="analyze" type="button">Analizar condiciones</button>
+        <button class="button secondary" id="clearTerms" type="button">Limpiar</button>
+      </div>
+      <p class="privacy-note">El texto se analiza únicamente en tu dispositivo. No se envía ni se guarda. Aun así, elimina cualquier dato personal antes de pegarlo.</p>
+    </section>
+
+    <section id="analysisResult" hidden aria-labelledby="resultado">
+      <h2 id="resultado">Resultado</h2>
+      <div id="analysisSummary" class="status neutral" role="status"></div>
+      <div id="findings" class="finding-grid"></div>
+      <div class="tool-actions">
+        <button class="button secondary" id="copyReport" type="button">Copiar informe</button>
+        <a class="button primary" id="calculatorLink" href="calculadora-rollover.html">Abrir calculadora</a>
+      </div>
+    </section>
+
+    <div class="notice"><strong>“No localizado” no significa “no existe”.</strong> La condición puede estar redactada de otra manera, dentro de un enlace, en una tabla o en los términos generales de la cuenta. Este análisis es una ayuda para leer, no una aprobación del bono.</div>
+
+    <h2>Las nueve preguntas que conviene responder</h2>
+    <ol class="steps">
+      <li><strong>Rollover:</strong> ¿cuántas veces debe apostarse y sobre qué base?</li>
+      <li><strong>Base:</strong> ¿el multiplicador se aplica al bono o al depósito más el bono?</li>
+      <li><strong>Apuesta máxima:</strong> ¿hay un límite por ronda mientras el bono está activo?</li>
+      <li><strong>Caducidad:</strong> ¿cuántas horas o días hay para completar el requisito?</li>
+      <li><strong>Retiro máximo:</strong> ¿existe un tope de conversión o ganancias retirables?</li>
+      <li><strong>Contribución:</strong> ¿todos los juegos aportan el 100% al progreso?</li>
+      <li><strong>Exclusiones:</strong> ¿qué juegos o tipos de apuesta no cuentan?</li>
+      <li><strong>KYC:</strong> ¿qué verificación puede exigirse antes de retirar?</li>
+      <li><strong>Cancelación:</strong> ¿qué saldo se pierde al cancelar el bono?</li>
+    </ol>
+
+    <h2>Qué hace diferente a este analizador</h2>
+    <p>No utiliza inteligencia artificial ni envía el texto a terceros. Busca expresiones frecuentes en español e inglés directamente en el navegador. Por eso es rápido y privado, pero también más conservador: cuando no reconoce una redacción, indica que hay que revisarla manualmente.</p>
+
+    <div class="sources">
+      <h2>Fuentes y metodología</h2>
+      <p><a href="https://help.bc.support/en/articles/10750639-rollover-explained" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: Rollover Explained</a></p>
+      <p><a href="https://help.bc.support/en/collections/3980790-bonus" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: colección de artículos sobre bonos</a></p>
+      <p><a href="metodologia-fuentes.html">Metodología editorial y aviso de afiliación</a></p>
+      <p class="source-note">Los patrones y el código del analizador están visibles en el propio archivo HTML. No se asigna una puntuación comercial ni se recomienda aceptar la promoción.</p>
+    </div>
+  </main>
+  <footer><p><strong>18+ · Juega responsablemente.</strong> Un bono no elimina el riesgo de perder el depósito.</p></footer>
+
+  <script>
+    const termsField = document.getElementById('termsText');
+    const charCount = document.getElementById('charCount');
+    const resultSection = document.getElementById('analysisResult');
+    const findingsBox = document.getElementById('findings');
+    const calculatorLink = document.getElementById('calculatorLink');
+    let reportText = '';
+
+    const checks = [
+      {key:'rollover', title:'Rollover o requisito de apuesta', patterns:[/\b\d{1,3}(?:[.,]\d+)?\s*(?:x|×|veces)\b/i,/\b(?:rollover|wagering|playthrough|requisito(?:s)? de apuesta)\b/i]},
+      {key:'base', title:'Base del rollover', patterns:[/\b(?:dep[oó]sito\s*(?:\+|y|más)\s*bono|deposit\s*(?:\+|and)\s*bonus|solo (?:sobre )?(?:el )?bono|bonus only)\b/i]},
+      {key:'maxbet', title:'Apuesta máxima', patterns:[/\b(?:apuesta m[aá]xima|l[ií]mite (?:de|por) apuesta|max(?:imum)? bet)\b/i]},
+      {key:'expiry', title:'Caducidad o plazo', patterns:[/\b(?:caduca|caducidad|expira|v[aá]lid[oa]|plazo|expiry|expires?|valid for)\b/i,/\b\d+\s*(?:horas?|d[ií]as?|hours?|days?)\b/i]},
+      {key:'cashout', title:'Retiro o conversión máxima', patterns:[/\b(?:retiro m[aá]ximo|m[aá]xima conversi[oó]n|tope (?:de )?(?:retiro|ganancia)|maximum (?:cashout|withdrawal)|win(?:ning)? cap)\b/i]},
+      {key:'contribution', title:'Contribución de juegos', patterns:[/\b(?:contribuci[oó]n|contribuyen|aporta[nr]?|game weighting|contribute)\b/i]},
+      {key:'excluded', title:'Juegos o apuestas excluidos', patterns:[/\b(?:juegos? excluid[oa]s?|no (?:cuentan|contribuyen)|excluded games?|do not contribute|not eligible)\b/i]},
+      {key:'kyc', title:'Verificación KYC', patterns:[/\b(?:kyc|verificaci[oó]n (?:de identidad|de cuenta)|identity verification|verify your identity)\b/i]},
+      {key:'cancel', title:'Consecuencias de cancelar', patterns:[/\b(?:cancelar? (?:el )?bono|cancelaci[oó]n (?:del )?bono|bonus cancellation|cancel(?:ling|ing) the bonus|perder[aá](?:s)? (?:el )?bono)\b/i]}
+    ];
+
+    function updateCount() {
+      charCount.textContent = new Intl.NumberFormat('es-MX').format(termsField.value.length) + ' caracteres';
+    }
+
+    function sentences(text) {
+      return text.replace(/\r/g,'').split(/(?<=[.!?;])\s+|\n+/).map(part => part.trim()).filter(Boolean);
+    }
+
+    function findEvidence(parts, patterns) {
+      return parts.find(part => patterns.some(pattern => pattern.test(part))) || '';
+    }
+
+    function addFinding(check, evidence) {
+      const article = document.createElement('article');
+      article.className = 'finding ' + (evidence ? 'found' : 'missing');
+      const label = document.createElement('span');
+      label.className = 'finding-label';
+      label.textContent = evidence ? 'LOCALIZADO' : 'NO LOCALIZADO';
+      const title = document.createElement('h3');
+      title.textContent = check.title;
+      const detail = document.createElement('p');
+      detail.className = 'evidence';
+      detail.textContent = evidence ? evidence : 'Revisa manualmente el documento completo y cualquier enlace relacionado.';
+      article.append(label,title,detail);
+      findingsBox.append(article);
+    }
+
+    function analyzeTerms() {
+      const text = termsField.value.trim();
+      if (text.length < 30) {
+        resultSection.hidden = false;
+        findingsBox.textContent = '';
+        const summary = document.getElementById('analysisSummary');
+        summary.className = 'status warn';
+        summary.textContent = 'Pega un texto más completo para poder buscar las condiciones.';
+        calculatorLink.href = 'calculadora-rollover.html';
+        reportText = '';
+        return;
+      }
+
+      const parts = sentences(text);
+      const results = checks.map(check => ({check, evidence:findEvidence(parts,check.patterns)}));
+      const found = results.filter(result => result.evidence).length;
+      findingsBox.textContent = '';
+      results.forEach(result => addFinding(result.check,result.evidence));
+      const summary = document.getElementById('analysisSummary');
+      summary.className = 'status ' + (found >= 7 ? 'good' : found >= 4 ? 'warn' : 'bad');
+      summary.textContent = found === checks.length
+        ? 'Se localizaron las ' + checks.length + ' condiciones buscadas. Comprueba igualmente el documento completo.'
+        : 'Se localizaron ' + found + ' de ' + checks.length + ' condiciones. Las demás requieren revisión manual; su ausencia en el resultado no confirma que no existan.';
+      resultSection.hidden = false;
+
+      const rolloverEvidence = results.find(result => result.check.key === 'rollover')?.evidence || '';
+      const match = rolloverEvidence.match(/\b(\d{1,3}(?:[.,]\d+)?)\s*(?:x|×|veces)\b/i);
+      const rollover = match ? match[1].replace(',','.') : '';
+      calculatorLink.href = rollover ? 'calculadora-rollover.html?rollover=' + encodeURIComponent(rollover) : 'calculadora-rollover.html';
+      calculatorLink.textContent = rollover ? 'Calcular este rollover (' + rollover + '×)' : 'Abrir calculadora';
+
+      reportText = 'Informe de condiciones del bono\n\n' + results.map(result => (result.evidence ? '[LOCALIZADO] ' : '[REVISAR] ') + result.check.title + '\n' + (result.evidence || 'No localizado automáticamente.')).join('\n\n') + '\n\nAviso: no localizado no significa inexistente. Lee el documento completo.';
+      resultSection.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    termsField.addEventListener('input', updateCount);
+    document.getElementById('analyze').addEventListener('click', analyzeTerms);
+    document.getElementById('clearTerms').addEventListener('click', () => {
+      termsField.value = '';
+      updateCount();
+      resultSection.hidden = true;
+      findingsBox.textContent = '';
+      termsField.focus();
+    });
+    document.getElementById('loadExample').addEventListener('click', () => {
+      termsField.value = 'EJEMPLO FICTICIO. El bono tiene un requisito de apuesta de 25x calculado solo sobre el bono. La apuesta máxima permitida es de $100 MXN por ronda. La promoción expira en 7 días. El retiro máximo procedente del bono es de $2,000 MXN. Las tragamonedas contribuyen al 100%; los juegos de mesa no contribuyen. Se requiere verificación KYC antes del retiro. Al cancelar el bono se perderá el saldo promocional.';
+      updateCount();
+      analyzeTerms();
+    });
+    document.getElementById('copyReport').addEventListener('click', async event => {
+      if (!reportText) return;
+      await navigator.clipboard.writeText(reportText);
+      event.currentTarget.textContent = 'Informe copiado';
+      setTimeout(() => event.currentTarget.textContent = 'Copiar informe',1600);
+    });
+    updateCount();
+  </script>
+</body>
+</html>

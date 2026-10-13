@@ -7,6 +7,7 @@ Guía independiente en español sobre BC.GAME para usuarios adultos en México. 
 ## Contenido
 
 - Calculadora del coste real de un bono: rollover, RTP, progreso y ritmo diario.
+- Analizador local de términos de bonos en español e inglés.
 - Diagnóstico interactivo de retiros con lista segura para soporte.
 - Planificador de límite de pérdida y tiempo con temporizador y pausas.
 - Guía de verificación KYC.

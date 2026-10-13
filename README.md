@@ -6,11 +6,12 @@ Guía independiente en español sobre BC.GAME para usuarios adultos en México. 
 
 ## Contenido
 
-- Calculadora de rollover con contribución del juego.
-- Lista de control para retiros.
+- Calculadora del coste real de un bono: rollover, RTP, progreso y ritmo diario.
+- Diagnóstico interactivo de retiros con lista segura para soporte.
+- Planificador de límite de pérdida y tiempo con temporizador y pausas.
 - Guía de verificación KYC.
 - Comparación de redes USDT.
-- Explicación de Provably Fair.
+- Verificador local SHA-256 del compromiso de un server seed.
 - Comprobación de permisos y seguridad en México.
 - Metodología, fuentes y aviso de afiliación.
 

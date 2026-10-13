@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagnóstico de retiro BC.GAME: qué revisar paso a paso</title>
+  <meta name="description" content="Selecciona el estado del retiro, KYC, rollover, red y hash para obtener una lista privada y ordenada de comprobaciones. Sin guardar datos.">
+  <link rel="canonical" href="https://dzoyox.github.io/bcgame-mexico-guide/diagnostico-retiro-bc-game.html">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#07110d">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Diagnóstico de retiro BC.GAME","url":"https://dzoyox.github.io/bcgame-mexico-guide/diagnostico-retiro-bc-game.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","inLanguage":"es-MX","isAccessibleForFree":true,"dateModified":"2026-10-13"}</script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="calculadora-rollover.html">Coste del bono</a><a href="provably-fair-bc-game.html">Verificador SHA-256</a></nav></header>
+  <main class="article-shell">
+    <nav class="article-nav" aria-label="Navegación secundaria"><a href="index.html">← Inicio</a><a href="retiros-bc-game-mexico.html">Guía completa de retiro</a></nav>
+    <div class="breadcrumbs"><a href="index.html">Inicio</a> › Diagnóstico de retiro</div>
+    <p class="eyebrow">ASISTENTE PRIVADO · SIN REGISTRO · 18+</p>
+    <h1>¿Dónde está bloqueado tu retiro?</h1>
+    <p class="article-intro">Marca lo que ves en tu cuenta. El asistente ordenará las comprobaciones más útiles y preparará una lista de datos no sensibles para soporte.</p>
+    <p class="reviewed">Revisado el <time datetime="2026-10-13">13 de octubre de 2026</time>.</p>
+
+    <section class="tool-panel" aria-labelledby="datos-retiro">
+      <h2 id="datos-retiro">Situación actual</h2>
+      <div class="tool-grid">
+        <label>Estado mostrado<select id="withdrawalStatus"><option value="pending">Pendiente / en revisión</option><option value="processing">Procesando</option><option value="completed">Completado</option><option value="rejected">Rechazado</option></select></label>
+        <label>¿Aparece un hash o TxID?<select id="hasHash"><option value="no">No</option><option value="yes">Sí</option><option value="unknown">No lo sé</option></select></label>
+        <label>Estado del KYC<select id="kyc"><option value="verified">Verificado</option><option value="pending">Pendiente</option><option value="not-started">No iniciado</option><option value="rejected">Rechazado</option><option value="unknown">No lo sé</option></select></label>
+        <label>Rollover o bono<select id="rolloverState"><option value="none">Sin bono / completado</option><option value="active">Activo o incompleto</option><option value="unknown">No lo sé</option></select></label>
+        <label>¿Coinciden moneda y red en origen y destino?<select id="network"><option value="yes">Sí</option><option value="no">No</option><option value="unknown">No lo sé</option></select></label>
+        <label>Horas desde la solicitud<input id="hours" type="number" min="0" step="1" value="2"></label>
+      </div>
+      <button class="button primary" id="diagnose" type="button">Crear diagnóstico</button>
+
+      <div id="diagnosticLevel" class="status neutral" role="status">Completa los campos y pulsa “Crear diagnóstico”.</div>
+      <section id="diagnosticResult" class="diagnostic-result" hidden>
+        <h3>Qué hacer ahora</h3>
+        <ol id="actions" class="result-list"></ol>
+        <h3>Datos seguros para preparar</h3>
+        <ul id="supportData" class="checklist compact"></ul>
+        <div class="tool-actions"><button class="button secondary" id="copyDiagnostic" type="button">Copiar lista para soporte</button></div>
+      </section>
+      <p class="privacy-note">El diagnóstico se genera localmente. No introduzcas aquí dirección completa, documentos, contraseña, códigos 2FA, clave privada ni frase semilla.</p>
+    </section>
+
+    <div class="notice"><strong>No envíes otra transferencia para “desbloquear” un retiro.</strong> Si alguien pide tu frase semilla, clave privada o un pago adicional por mensaje directo, detente y usa únicamente el soporte enlazado desde el sitio oficial.</div>
+
+    <h2>Cómo interpretar la señal principal</h2>
+    <ul>
+      <li><strong>Sin hash:</strong> normalmente aún no hay una transacción pública que revisar en la blockchain.</li>
+      <li><strong>Con hash:</strong> comprueba red, dirección, confirmaciones y estado en un explorador de bloques adecuado.</li>
+      <li><strong>Completado pero no recibido:</strong> compara la red y dirección del TxID con las admitidas por la billetera receptora.</li>
+      <li><strong>Rechazado:</strong> lee el motivo exacto antes de volver a solicitar; repetir sin corregirlo no resuelve la causa.</li>
+    </ul>
+
+    <div class="sources">
+      <h2>Fuentes y siguientes pasos</h2>
+      <p><a href="https://help.bc.support/es/articles/10702437-una-guia-de-las-funciones-de-tu-billetera" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: funciones de la billetera</a></p>
+      <p><a href="https://help.bc.support/es/articles/11114036-guia-para-la-verificacion-kyc" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: guía KYC</a></p>
+      <p><a href="retiros-bc-game-mexico.html">Guía detallada de retiros, estados y seguridad</a></p>
+      <p class="source-note">Los tiempos y requisitos pueden variar. La pantalla de tu cuenta y el soporte oficial son la fuente final para un caso concreto.</p>
+    </div>
+  </main>
+  <footer><p><strong>18+ · Juega responsablemente.</strong> Las transferencias blockchain suelen ser irreversibles.</p></footer>
+  <script>
+    const get = id => document.getElementById(id).value;
+    let lastText = '';
+    document.getElementById('diagnose').addEventListener('click', () => {
+      const status = get('withdrawalStatus');
+      const hash = get('hasHash');
+      const kyc = get('kyc');
+      const rollover = get('rolloverState');
+      const network = get('network');
+      const hours = Math.max(0, Number(get('hours')) || 0);
+      const actions = [];
+      let level = 'good';
+      let headline = 'No aparece una señal crítica en los datos seleccionados.';
+
+      if (network === 'no') {
+        level = 'bad';
+        headline = 'Posible incompatibilidad de red: no repitas el envío.';
+        actions.push('Compara la moneda, la red, la dirección y cualquier memo o tag en el detalle de la operación.');
+        actions.push('Contacta tanto al soporte oficial como a la billetera receptora; la recuperación puede no ser posible.');
+      } else if (network === 'unknown') {
+        level = 'warn';
+        headline = 'Primero confirma la red de origen y destino.';
+        actions.push('Abre el detalle del retiro y verifica la red exacta, no solo el nombre de la moneda.');
+      }
+
+      if (status === 'pending') {
+        actions.push('Como no consta aún como completado, revisa si hay una solicitud de KYC, seguridad o confirmación por correo.');
+        if (hash === 'no') actions.push('Sin TxID no hay todavía una transacción pública que buscar en un explorador; conserva el ID interno de la solicitud.');
+      }
+      if (status === 'processing') {
+        actions.push(hash === 'yes' ? 'Abre el TxID en el explorador oficial de la red y comprueba sus confirmaciones.' : 'Busca el TxID en el historial. Si no aparece, el envío puede seguir en procesamiento interno.');
+      }
+      if (status === 'completed') {
+        if (hash === 'yes') actions.push('Verifica en el explorador que el TxID esté confirmado y que dirección, moneda y red coincidan con la billetera receptora.');
+        else {
+          level = 'warn';
+          headline = 'Figura como completado, pero falta un TxID verificable.';
+          actions.push('Solicita al soporte oficial el hash de la transacción y la red exacta utilizada.');
+        }
+      }
+      if (status === 'rejected') {
+        level = level === 'bad' ? level : 'warn';
+        headline = level === 'bad' ? headline : 'Corrige el motivo del rechazo antes de repetir.';
+        actions.push('Lee el mensaje exacto y el correo asociado; no abras solicitudes repetidas sin corregir la causa indicada.');
+      }
+      if (kyc === 'pending' || kyc === 'not-started' || kyc === 'rejected') {
+        level = level === 'bad' ? level : 'warn';
+        actions.push(kyc === 'rejected' ? 'Revisa el motivo del rechazo KYC y que nombre, país, fecha y documento sean legibles y coincidan.' : 'Comprueba en tu cuenta si el retiro requiere completar o esperar la verificación KYC.');
+      } else if (kyc === 'unknown') {
+        actions.push('Comprueba la sección de verificación para confirmar si existe una solicitud KYC pendiente.');
+      }
+      if (rollover === 'active') {
+        level = level === 'bad' ? level : 'warn';
+        actions.push('Revisa el progreso del rollover y las consecuencias de cancelar el bono antes de hacer cambios.');
+      } else if (rollover === 'unknown') {
+        actions.push('Abre la sección del bono y confirma si queda rollover pendiente o saldo bloqueado.');
+      }
+      if (hours >= 24 && (status === 'pending' || status === 'processing')) {
+        actions.push('Como ya pasó al menos un día, compara el tiempo con el aviso visible en tu cuenta y contacta al soporte oficial si está fuera de ese plazo.');
+      }
+      if (!actions.length) actions.push('Guarda el TxID y verifica las confirmaciones en la red correcta hasta que la billetera receptora lo refleje.');
+
+      const support = [
+        'Fecha, hora aproximada y zona horaria',
+        'Moneda, red e importe',
+        'Estado exacto y ID interno de la solicitud',
+        hash === 'yes' ? 'TxID o hash de la transacción' : 'Indicar que todavía no aparece TxID',
+        'Captura recortada sin dirección completa ni datos personales'
+      ];
+      document.getElementById('actions').innerHTML = actions.map(item => '<li>' + item + '</li>').join('');
+      document.getElementById('supportData').innerHTML = support.map(item => '<li>' + item + '</li>').join('');
+      const levelBox = document.getElementById('diagnosticLevel');
+      levelBox.className = 'status ' + level;
+      levelBox.textContent = headline;
+      document.getElementById('diagnosticResult').hidden = false;
+      lastText = 'Diagnóstico de retiro\n' + headline + '\n\nPasos:\n' + actions.map((item,index) => (index + 1) + '. ' + item).join('\n') + '\n\nDatos para soporte:\n- ' + support.join('\n- ');
+    });
+    document.getElementById('copyDiagnostic').addEventListener('click', async event => {
+      await navigator.clipboard.writeText(lastText);
+      event.currentTarget.textContent = 'Lista copiada';
+      setTimeout(() => event.currentTarget.textContent = 'Copiar lista para soporte', 1600);
+    });
+  </script>
+</body>
+</html>

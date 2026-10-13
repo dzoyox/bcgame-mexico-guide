@@ -1,41 +1,157 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es-MX">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Calculadora de rollover de bonos | BC.GAME México</title>
-  <meta name="description" content="Calculadora de rollover en MXN: compara bono, depósito, multiplicador y contribución del juego. Incluye fórmula y ejemplos claros para México.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora del coste real de un bono y rollover</title>
+  <meta name="description" content="Calcula rollover pendiente, volumen real, coste teórico según RTP, ritmo diario y número mínimo de apuestas. Gratis y sin enviar datos.">
   <link rel="canonical" href="https://dzoyox.github.io/bcgame-mexico-guide/calculadora-rollover.html">
-  <meta name="robots" content="index,follow"><meta name="theme-color" content="#07110d"><link rel="stylesheet" href="styles.css?v=4">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de rollover de bonos","url":"https://dzoyox.github.io/bcgame-mexico-guide/calculadora-rollover.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"es-MX","isAccessibleForFree":true,"dateModified":"2026-10-06"}</script>
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#07110d">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora del coste real de un bono y rollover","url":"https://dzoyox.github.io/bcgame-mexico-guide/calculadora-rollover.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","inLanguage":"es-MX","isAccessibleForFree":true,"dateModified":"2026-10-13","featureList":["Cálculo de rollover","Coste teórico según RTP","Progreso y ritmo diario","Enlace compartible"]}</script>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav><a href="index.html">Inicio</a><a href="retiros-bc-game-mexico.html">Retiros</a><a href="provably-fair-bc-game.html">Provably Fair</a></nav></header>
+  <header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="diagnostico-retiro-bc-game.html">Diagnóstico de retiro</a><a href="provably-fair-bc-game.html">Verificador SHA-256</a></nav></header>
   <main class="article-shell">
-    <nav class="article-nav"><a href="index.html">← Inicio</a><a href="retiros-bc-game-mexico.html">Guía de retiro</a></nav>
-    <div class="breadcrumbs"><a href="index.html">Inicio</a> › Calculadora de rollover</div>
-    <p class="eyebrow">HERRAMIENTA GRATUITA · 18+</p>
-    <h1>Calculadora de rollover</h1>
-    <p class="article-intro">Introduce las condiciones exactas que ves en la promoción. La calculadora estima el volumen total de apuesta, no las pérdidas ni las ganancias.</p>
-    <div class="calculator">
-      <label>Depósito (MXN)<input id="deposit" type="number" min="0" step="1" value="500"></label>
-      <label>Bono recibido (MXN)<input id="bonus" type="number" min="0" step="1" value="500"></label>
-      <label>Multiplicador de rollover<input id="rollover" type="number" min="0" step="1" value="20"></label>
-      <label>Contribución del juego (%)<input id="contribution" type="number" min="1" max="100" step="1" value="100"></label>
-      <label>Base del cálculo<select id="base"><option value="bonus">Solo el bono</option><option value="both">Depósito + bono</option></select></label>
-      <div class="result">Volumen estimado de apuesta<strong id="result">$10,000 MXN</strong></div>
+    <nav class="article-nav" aria-label="Navegación secundaria"><a href="index.html">← Inicio</a><a href="diagnostico-retiro-bc-game.html">Diagnosticar retiro</a></nav>
+    <div class="breadcrumbs"><a href="index.html">Inicio</a> › Calculadora del coste del bono</div>
+    <p class="eyebrow">HERRAMIENTA GRATUITA · DATOS LOCALES · 18+</p>
+    <h1>¿Cuánto cuesta realmente completar un bono?</h1>
+    <p class="article-intro">Introduce las condiciones exactas de la promoción. Además del rollover, verás una estimación matemática de la pérdida esperada a largo plazo. No es una predicción de tu sesión.</p>
+    <p class="reviewed">Revisado el <time datetime="2026-10-13">13 de octubre de 2026</time>.</p>
+
+    <section class="tool-panel" aria-labelledby="datos-bono">
+      <h2 id="datos-bono">Datos del bono</h2>
+      <div class="tool-grid">
+        <label>Depósito (MXN)<input id="deposit" type="number" min="0" step="1" value="500"></label>
+        <label>Bono recibido (MXN)<input id="bonus" type="number" min="0" step="1" value="500"></label>
+        <label>Multiplicador de rollover<input id="rollover" type="number" min="0" step="0.1" value="20"></label>
+        <label>Base del cálculo<select id="base"><option value="bonus">Solo el bono</option><option value="both">Depósito + bono</option></select></label>
+        <label>Contribución del juego (%)<input id="contribution" type="number" min="0.1" max="100" step="0.1" value="100"></label>
+        <label>RTP teórico del juego (%)<input id="rtp" type="number" min="0" max="100" step="0.1" value="96"></label>
+        <label>Volumen ya apostado (MXN)<input id="completed" type="number" min="0" step="1" value="0"></label>
+        <label>Días restantes<input id="days" type="number" min="1" step="1" value="7"></label>
+        <label>Apuesta máxima por ronda (MXN, opcional)<input id="maxBet" type="number" min="0" step="1" value="50"></label>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progreso estimado</span><strong id="progressText">0%</strong></div>
+        <progress class="progress-track" id="progressTrack" aria-label="Progreso del rollover" max="100" value="0">0%</progress>
+      </div>
+
+      <div class="metric-grid" aria-live="polite">
+        <div class="metric featured"><span>Volumen real necesario</span><strong id="realVolume">$10,000 MXN</strong><small>ajustado por la contribución</small></div>
+        <div class="metric"><span>Volumen restante</span><strong id="remainingVolume">$10,000 MXN</strong></div>
+        <div class="metric"><span>Pérdida teórica total</span><strong id="expectedLoss">$400 MXN</strong><small>volumen × (1 − RTP)</small></div>
+        <div class="metric"><span>Valor teórico del bono</span><strong id="bonusValue">$100 MXN</strong><small>bono − pérdida teórica</small></div>
+        <div class="metric"><span>Ritmo diario necesario</span><strong id="dailyVolume">$1,429 MXN</strong></div>
+        <div class="metric"><span>Rondas mínimas restantes</span><strong id="rounds">200</strong><small>si cada apuesta usa el máximo indicado</small></div>
+      </div>
+
+      <div id="assessment" class="status warn" role="status"></div>
+      <div class="tool-actions">
+        <button class="button primary" id="copySummary" type="button">Copiar resumen</button>
+        <button class="button secondary" id="copyLink" type="button">Copiar enlace con estos datos</button>
+      </div>
+      <p class="privacy-note">Los cálculos se realizan en tu navegador. Esta página no envía ni guarda los valores introducidos.</p>
+    </section>
+
+    <div class="notice"><strong>Límite importante:</strong> el RTP es un promedio teórico de muchísimas jugadas. La volatilidad puede producir resultados muy distintos en una sesión corta. Tampoco se incluyen topes de retiro, comisiones, juegos excluidos ni límites especiales de la promoción.</div>
+
+    <h2 id="formula">Cómo se calcula</h2>
+    <ol>
+      <li><strong>Requisito calificable:</strong> base × multiplicador.</li>
+      <li><strong>Volumen real:</strong> requisito calificable ÷ contribución del juego.</li>
+      <li><strong>Pérdida teórica:</strong> volumen real × (1 − RTP).</li>
+      <li><strong>Valor teórico del bono:</strong> bono − pérdida teórica.</li>
+    </ol>
+    <p>Ejemplo: un bono de $500 MXN con rollover 20× requiere $10,000 MXN si el juego contribuye al 100%. Con RTP de 96%, la pérdida matemática esperada a largo plazo sería $400 MXN. Si el juego contribuye solo al 20%, el volumen sube a $50,000 MXN y el coste teórico a $2,000 MXN.</p>
+
+    <h2>Antes de decidir</h2>
+    <ul>
+      <li>Comprueba qué juegos contribuyen y en qué porcentaje.</li>
+      <li>Revisa la apuesta máxima, la fecha de expiración y el retiro máximo.</li>
+      <li>Confirma si el rollover se calcula solo sobre el bono o sobre depósito + bono.</li>
+      <li>Lee qué sucede al cancelar el bono y si se pierden fondos asociados.</li>
+    </ul>
+
+    <div class="sources">
+      <h2>Fuentes y alcance</h2>
+      <p><a href="https://help.bc.support/en/articles/10750639-rollover-explained" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: Rollover Explained</a></p>
+      <p><a href="https://www.gamblingcommission.gov.uk/public-and-players/guide/page/how-to-calculate-return-to-player-rtp" rel="noopener noreferrer" target="_blank">UK Gambling Commission: cómo se calcula el RTP</a></p>
+      <p class="source-note">Las condiciones visibles en tu cuenta y en la promoción concreta prevalecen sobre esta calculadora.</p>
     </div>
-    <div class="notice"><strong>Importante:</strong> apostar ese volumen no garantiza completar todos los requisitos. Algunos juegos aportan menos del 100%, pueden existir límites de apuesta, fechas de expiración y topes de retiro.</div>
-    <h2 id="formula">Cómo interpretar el resultado</h2>
-    <p>La fórmula usada es: <strong>base × multiplicador ÷ contribución</strong>. Si el bono es de $500 MXN y el rollover es 20× calculado solo sobre el bono, el volumen indicado es $10,000 MXN con una contribución del 100%. Si el juego aporta solo 20%, el volumen equivalente sube a $50,000 MXN.</p>
-    <table class="comparison"><thead><tr><th>Ejemplo</th><th>Cálculo</th><th>Volumen</th></tr></thead><tbody><tr><td>Bono $500, 20×, aporte 100%</td><td>500 × 20 ÷ 1</td><td>$10,000 MXN</td></tr><tr><td>Depósito + bono de $500, 20×</td><td>1,000 × 20 ÷ 1</td><td>$20,000 MXN</td></tr><tr><td>Bono $500, 20×, aporte 20%</td><td>500 × 20 ÷ 0.2</td><td>$50,000 MXN</td></tr></tbody></table>
-    <h2>Qué revisar además del número</h2>
-    <ul><li>Juegos que contribuyen al rollover y su porcentaje.</li><li>Apuesta máxima permitida mientras el bono está activo.</li><li>Fecha de expiración y retiro máximo.</li><li>Consecuencias de cancelar el bono.</li></ul>
-    <div class="sources"><h2>Fuente y revisión</h2><p>Concepto contrastado con la explicación oficial de BC.GAME sobre requisitos de rollover. Las reglas concretas de cada promoción prevalecen sobre esta calculadora.</p><p><a href="https://help.bc.game/en/articles/10750639-rollover-explained" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: Rollover Explained</a></p><p>Revisado el <time datetime="2026-10-06">6 de octubre de 2026</time>.</p></div>
   </main>
-  <footer><p><strong>18+ · Juega responsablemente.</strong> Herramienta educativa; no garantiza resultados.</p></footer>
+  <footer><p><strong>18+ · Juega responsablemente.</strong> Herramienta educativa; no garantiza resultados ni recomienda aceptar un bono.</p></footer>
   <script>
-    const ids=['deposit','bonus','rollover','contribution','base'];
-    const calculate=()=>{const d=Number(document.querySelector('#deposit').value)||0;const b=Number(document.querySelector('#bonus').value)||0;const r=Number(document.querySelector('#rollover').value)||0;const c=Math.min(100,Math.max(1,Number(document.querySelector('#contribution').value)||100))/100;const base=document.querySelector('#base').value==='both'?d+b:b;document.querySelector('#result').textContent=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(base*r/c)};
-    ids.forEach(id=>document.querySelector('#'+id).addEventListener('input',calculate));calculate();
+    const fieldIds = ['deposit','bonus','rollover','base','contribution','rtp','completed','days','maxBet'];
+    const money = value => new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(Number.isFinite(value) ? value : 0);
+    const number = id => Math.max(0, Number(document.getElementById(id).value) || 0);
+    const params = new URLSearchParams(location.search);
+
+    fieldIds.forEach(id => {
+      const field = document.getElementById(id);
+      if (params.has(id)) field.value = params.get(id);
+    });
+
+    function calculate() {
+      const deposit = number('deposit');
+      const bonus = number('bonus');
+      const rollover = number('rollover');
+      const contribution = Math.min(100, Math.max(0.1, number('contribution') || 100)) / 100;
+      const rtp = Math.min(100, number('rtp')) / 100;
+      const completed = number('completed');
+      const days = Math.max(1, number('days') || 1);
+      const maxBet = number('maxBet');
+      const baseAmount = document.getElementById('base').value === 'both' ? deposit + bonus : bonus;
+      const qualifying = baseAmount * rollover;
+      const real = qualifying / contribution;
+      const remaining = Math.max(0, real - completed);
+      const expectedLoss = real * (1 - rtp);
+      const bonusValue = bonus - expectedLoss;
+      const progress = real > 0 ? Math.min(100, completed / real * 100) : 100;
+
+      document.getElementById('realVolume').textContent = money(real);
+      document.getElementById('remainingVolume').textContent = money(remaining);
+      document.getElementById('expectedLoss').textContent = money(expectedLoss);
+      document.getElementById('bonusValue').textContent = money(bonusValue);
+      document.getElementById('dailyVolume').textContent = money(remaining / days);
+      document.getElementById('rounds').textContent = maxBet > 0 ? new Intl.NumberFormat('es-MX').format(Math.ceil(remaining / maxBet)) : '—';
+      document.getElementById('progressText').textContent = progress.toFixed(progress < 10 ? 1 : 0) + '%';
+      document.getElementById('progressTrack').value = progress;
+
+      const assessment = document.getElementById('assessment');
+      assessment.className = 'status ' + (bonusValue < 0 ? 'bad' : bonusValue < bonus * 0.25 ? 'warn' : 'good');
+      if (real === 0) {
+        assessment.textContent = 'Introduce los datos de la promoción para obtener una estimación.';
+      } else if (bonusValue < 0) {
+        assessment.textContent = 'Según este modelo, la pérdida teórica supera el bono en ' + money(Math.abs(bonusValue)) + '. La promoción tiene valor esperado negativo antes de considerar otras restricciones.';
+      } else {
+        assessment.textContent = 'Valor teórico restante del bono: ' + money(bonusValue) + '. Es una media matemática a largo plazo, no una ganancia probable ni garantizada.';
+      }
+
+      const share = new URL(location.href);
+      fieldIds.forEach(id => share.searchParams.set(id, document.getElementById(id).value));
+      history.replaceState(null, '', share);
+      return {real,remaining,expectedLoss,bonusValue,days,maxBet,progress,share};
+    }
+
+    fieldIds.forEach(id => document.getElementById(id).addEventListener('input', calculate));
+    document.getElementById('copySummary').addEventListener('click', async event => {
+      const values = calculate();
+      const text = 'Resumen del bono\nVolumen real: ' + money(values.real) + '\nPendiente: ' + money(values.remaining) + '\nPérdida teórica: ' + money(values.expectedLoss) + '\nValor teórico del bono: ' + money(values.bonusValue) + '\nProgreso: ' + values.progress.toFixed(1) + '%';
+      await navigator.clipboard.writeText(text);
+      event.currentTarget.textContent = 'Resumen copiado';
+      setTimeout(() => event.currentTarget.textContent = 'Copiar resumen', 1600);
+    });
+    document.getElementById('copyLink').addEventListener('click', async event => {
+      const values = calculate();
+      await navigator.clipboard.writeText(values.share.href);
+      event.currentTarget.textContent = 'Enlace copiado';
+      setTimeout(() => event.currentTarget.textContent = 'Copiar enlace con estos datos', 1600);
+    });
+    calculate();
   </script>
-</body></html>
+</body>
+</html>

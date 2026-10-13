@@ -1,2 +1,128 @@
-<!doctype html><html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Provably Fair en BC.GAME: cómo verificar una ronda</title><meta name="description" content="Qué significan server seed, client seed, hash y nonce en BC.GAME, cómo se verifica una ronda y qué no demuestra el sistema Provably Fair."><link rel="canonical" href="https://dzoyox.github.io/bcgame-mexico-guide/provably-fair-bc-game.html"><meta name="robots" content="index,follow"><meta name="theme-color" content="#07110d"><link rel="stylesheet" href="styles.css?v=3"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Provably Fair en BC.GAME: cómo verificar una ronda","datePublished":"2026-10-01","dateModified":"2026-10-06","inLanguage":"es-MX","mainEntityOfPage":"https://dzoyox.github.io/bcgame-mexico-guide/provably-fair-bc-game.html","publisher":{"@type":"Organization","name":"BCGUIDE"}}</script></head>
-<body><header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav><a href="index.html">Inicio</a><a href="calculadora-rollover.html">Rollover</a><a href="retiros-bc-game-mexico.html">Retiros</a></nav></header><main class="article-shell"><nav class="article-nav"><a href="index.html">← Inicio</a><a href="retiros-bc-game-mexico.html">Guía de retiro</a></nav><div class="breadcrumbs"><a href="index.html">Inicio</a> › Provably Fair</div><p class="eyebrow">EXPLICACIÓN SENCILLA · 18+</p><h1>Provably Fair en BC.GAME: qué verifica realmente</h1><p class="article-intro">Es un método criptográfico para comprobar que el resultado de una ronda coincide con datos comprometidos previamente. No convierte un juego en rentable ni elimina la ventaja de la casa.</p><p class="reviewed">Revisado el <time datetime="2026-10-06">6 de octubre de 2026</time>.</p><div class="toc"><strong>En esta guía</strong><ul><li><a href="#piezas">Server seed, client seed y nonce</a></li><li><a href="#verificar">Cómo verificar una ronda</a></li><li><a href="#limites">Qué no demuestra</a></li></ul></div><h2 id="piezas">Las cuatro piezas</h2><ol class="steps"><li><strong>Server seed:</strong> un valor secreto generado por el servidor. Antes de jugar se publica su hash, como compromiso previo.</li><li><strong>Client seed:</strong> un valor asociado al jugador que interviene en el cálculo.</li><li><strong>Nonce:</strong> un contador que cambia entre rondas para producir resultados distintos con las mismas semillas.</li><li><strong>Resultado:</strong> el algoritmo combina esos datos y los transforma en el valor usado por el juego.</li></ol><h2 id="verificar">Cómo comprobar una ronda</h2><ol><li>Guarda el hash del server seed mostrado antes de la ronda.</li><li>Cuando el server seed se revele o rote, calcula su hash.</li><li>Confirma que coincide con el compromiso publicado anteriormente.</li><li>Introduce server seed, client seed y nonce en el verificador correspondiente al juego.</li><li>Comprueba que el resultado reproducido coincide con el historial.</li></ol><p class="source-note">El algoritmo puede variar según el juego. No asumas que una fórmula de Crash sirve para Dice, Limbo u otro título.</p><h2 id="limites">Qué no demuestra</h2><ul><li>No garantiza una victoria ni una devolución concreta.</li><li>No elimina el house edge.</li><li>No demuestra por sí solo la solvencia, la licencia o la rapidez de los retiros.</li><li>No permite predecir la siguiente ronda.</li></ul><div class="notice"><strong>Regla útil:</strong> usa el verificador oficial o uno cuyo código puedas revisar. Nunca introduzcas contraseñas, claves privadas ni frases semilla en una herramienta de verificación.</div><div class="sources"><h2>Fuentes</h2><p><a href="https://help.bc.support/es/articles/10758648-comprendiendo-el-sistema-comprobablemente-justo" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: sistema comprobablemente justo</a></p><p><a href="https://whitepaper.bc.game/bc-white-paper/appendix/provably-fair" rel="noopener noreferrer" target="_blank">BC White Paper: Provably Fair</a></p></div><a class="button primary" href="index.html">Volver a la guía</a></main><footer><p><strong>18+ · Juega responsablemente.</strong> La transparencia del cálculo no elimina el riesgo financiero.</p></footer></body></html>
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verificador SHA-256 de server seed | Provably Fair</title>
+  <meta name="description" content="Comprueba localmente si un server seed revelado coincide con el hash SHA-256 publicado antes de jugar. Sin enviar ni guardar datos.">
+  <link rel="canonical" href="https://dzoyox.github.io/bcgame-mexico-guide/provably-fair-bc-game.html">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#07110d">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Verificador SHA-256 de server seed","url":"https://dzoyox.github.io/bcgame-mexico-guide/provably-fair-bc-game.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","inLanguage":"es-MX","isAccessibleForFree":true,"dateModified":"2026-10-13"}</script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="calculadora-rollover.html">Coste del bono</a><a href="diagnostico-retiro-bc-game.html">Diagnóstico de retiro</a></nav></header>
+  <main class="article-shell">
+    <nav class="article-nav" aria-label="Navegación secundaria"><a href="index.html">← Inicio</a><a href="calculadora-rollover.html">Calculadora del bono</a></nav>
+    <div class="breadcrumbs"><a href="index.html">Inicio</a> › Verificador SHA-256</div>
+    <p class="eyebrow">VERIFICADOR LOCAL · CÓDIGO ABIERTO EN EL NAVEGADOR · 18+</p>
+    <h1>Comprueba el compromiso del server seed</h1>
+    <p class="article-intro">Pega el server seed revelado y el hash que se mostró antes de jugar. La herramienta calcula SHA-256 en tu dispositivo y comprueba si coinciden.</p>
+    <p class="reviewed">Revisado el <time datetime="2026-10-13">13 de octubre de 2026</time>.</p>
+
+    <section class="tool-panel" aria-labelledby="verificador">
+      <h2 id="verificador">Verificador SHA-256</h2>
+      <label>Server seed revelado
+        <textarea id="serverSeed" rows="4" spellcheck="false" autocomplete="off" placeholder="Pega aquí el server seed después de que haya sido revelado"></textarea>
+      </label>
+      <label>Hash publicado previamente (64 caracteres hexadecimales)
+        <input id="publishedHash" type="text" inputmode="text" spellcheck="false" autocomplete="off" maxlength="64" placeholder="ej. a3f1...">
+      </label>
+      <div class="tool-actions">
+        <button class="button primary" id="verify" type="button">Calcular y comparar</button>
+        <button class="button secondary" id="copyHash" type="button" disabled>Copiar hash calculado</button>
+      </div>
+      <div id="hashStatus" class="status neutral" role="status">Introduce ambos valores. No uses una contraseña, clave privada ni frase semilla.</div>
+      <div class="hash-output">
+        <span>SHA-256 calculado</span>
+        <code id="calculatedHash">—</code>
+      </div>
+      <p class="privacy-note">Todo ocurre dentro de tu navegador mediante Web Crypto. Los valores no se transmiten ni se guardan.</p>
+    </section>
+
+    <h2>Qué significa el resultado</h2>
+    <div class="cards two-columns">
+      <article class="card"><span class="number">COINCIDE</span><h3>El compromiso es consistente</h3><p>El seed revelado genera exactamente el hash publicado. Eso indica que ese valor no fue cambiado después del compromiso.</p></article>
+      <article class="card"><span class="number">NO COINCIDE</span><h3>Los datos no son los mismos</h3><p>Revisa espacios, caracteres y que el hash pertenezca a esa ronda o rotación. Si sigue sin coincidir, conserva capturas y contacta al soporte oficial.</p></article>
+    </div>
+
+    <div class="notice"><strong>Esto no verifica por sí solo el resultado de la apuesta.</strong> Cada juego puede combinar server seed, client seed y nonce con un algoritmo distinto. La herramienta solo comprueba el compromiso SHA-256 del server seed.</div>
+
+    <h2>Qué sí y qué no demuestra</h2>
+    <ul>
+      <li><strong>Sí:</strong> que el seed revelado coincide con el hash SHA-256 que guardaste antes.</li>
+      <li><strong>No:</strong> que el resultado completo de la ronda se haya transformado correctamente.</li>
+      <li><strong>No:</strong> una devolución concreta, ausencia de house edge, solvencia, licencia o rapidez de retiro.</li>
+      <li><strong>No:</strong> la posibilidad de predecir la siguiente ronda.</li>
+    </ul>
+
+    <h2>Proceso correcto</h2>
+    <ol class="steps">
+      <li>Guarda el hash del server seed antes de jugar.</li>
+      <li>Espera a que el operador revele o rote el server seed.</li>
+      <li>Compara aquí el seed revelado con el hash guardado.</li>
+      <li>Para reproducir la ronda, usa además el algoritmo oficial específico del juego, client seed y nonce.</li>
+    </ol>
+
+    <div class="sources">
+      <h2>Fuentes</h2>
+      <p><a href="https://help.bc.support/es/articles/10758648-comprendiendo-el-sistema-comprobablemente-justo" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: sistema comprobablemente justo</a></p>
+      <p><a href="https://help.bc.support/en/articles/7846564-how-to-play-wheel" rel="noopener noreferrer" target="_blank">BC.GAME Help Center: ejemplo de algoritmo para Wheel</a></p>
+      <p class="source-note">La función SHA-256 de esta página usa la API criptográfica integrada en el navegador. Puedes revisar el código fuente completo de la página.</p>
+    </div>
+  </main>
+  <footer><p><strong>18+ · Juega responsablemente.</strong> La transparencia criptográfica no elimina el riesgo financiero.</p></footer>
+  <script>
+    const seedField = document.getElementById('serverSeed');
+    const publishedField = document.getElementById('publishedHash');
+    const hashOutput = document.getElementById('calculatedHash');
+    const status = document.getElementById('hashStatus');
+    const copyButton = document.getElementById('copyHash');
+
+    async function sha256(text) {
+      const bytes = new TextEncoder().encode(text);
+      const digest = await crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    document.getElementById('verify').addEventListener('click', async () => {
+      const seed = seedField.value;
+      const published = publishedField.value.trim().toLowerCase();
+      status.className = 'status neutral';
+      if (!seed) {
+        status.textContent = 'Introduce el server seed revelado.';
+        seedField.focus();
+        return;
+      }
+      if (!/^[0-9a-f]{64}$/.test(published)) {
+        status.className = 'status warn';
+        status.textContent = 'El hash publicado debe contener exactamente 64 caracteres hexadecimales (0–9, a–f).';
+        publishedField.focus();
+        return;
+      }
+      try {
+        const calculated = await sha256(seed);
+        hashOutput.textContent = calculated;
+        copyButton.disabled = false;
+        if (calculated === published) {
+          status.className = 'status good';
+          status.textContent = 'Coincide: el server seed revelado genera exactamente el hash publicado.';
+        } else {
+          status.className = 'status bad';
+          status.textContent = 'No coincide. Comprueba que no haya espacios añadidos y que ambos valores pertenezcan a la misma rotación.';
+        }
+      } catch (error) {
+        status.className = 'status bad';
+        status.textContent = 'Tu navegador no permitió calcular SHA-256. Prueba la versión HTTPS de esta página en un navegador actualizado.';
+      }
+    });
+
+    copyButton.addEventListener('click', async event => {
+      await navigator.clipboard.writeText(hashOutput.textContent);
+      event.currentTarget.textContent = 'Hash copiado';
+      setTimeout(() => event.currentTarget.textContent = 'Copiar hash calculado', 1600);
+    });
+  </script>
+</body>
+</html>

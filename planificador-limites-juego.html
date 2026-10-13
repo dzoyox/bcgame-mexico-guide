@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planificador de límite de pérdida y tiempo de juego</title>
+  <meta name="description" content="Define antes de jugar un límite máximo de pérdida, duración y pausas. Temporizador local gratuito, plan copiable y acceso a ayuda en México.">
+  <link rel="canonical" href="https://dzoyox.github.io/bcgame-mexico-guide/planificador-limites-juego.html">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#07110d">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Planificador de límite de pérdida y tiempo de juego","url":"https://dzoyox.github.io/bcgame-mexico-guide/planificador-limites-juego.html","applicationCategory":"HealthApplication","operatingSystem":"Any","inLanguage":"es-MX","isAccessibleForFree":true,"dateModified":"2026-10-13","featureList":["Límite de pérdida","Temporizador de sesión","Pausas automáticas","Plan copiable"]}</script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html">BC<span>GUIDE</span></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="calculadora-rollover.html">Coste del bono</a><a href="diagnostico-retiro-bc-game.html">Diagnóstico</a></nav></header>
+  <main class="article-shell">
+    <nav class="article-nav" aria-label="Navegación secundaria"><a href="index.html">← Inicio</a><a href="calculadora-rollover.html">Calculadora del bono</a></nav>
+    <div class="breadcrumbs"><a href="index.html">Inicio</a> › Planificador de límites</div>
+    <p class="eyebrow">CONTROL PREVIO · TEMPORIZADOR LOCAL · 18+</p>
+    <h1>Decide cuándo parar antes de empezar</h1>
+    <p class="article-intro">Fija una pérdida máxima, una duración y pausas antes de abrir el juego. El temporizador se detiene en cada pausa y al finalizar la sesión.</p>
+    <p class="reviewed">Revisado el <time datetime="2026-10-13">13 de octubre de 2026</time>.</p>
+
+    <section class="tool-panel" aria-labelledby="plan-limites">
+      <h2 id="plan-limites">Mi plan de sesión</h2>
+      <div class="tool-grid">
+        <label>Límite máximo de pérdida (MXN)<input id="lossLimit" type="number" min="0" step="1" value="500"></label>
+        <label>Pérdida acumulada antes de empezar (MXN)<input id="alreadyLost" type="number" min="0" step="1" value="0"></label>
+        <label>Duración máxima (minutos)<input id="duration" type="number" min="1" max="1440" step="1" value="60"></label>
+        <label>Pausa cada (minutos)<input id="breakEvery" type="number" min="1" max="1440" step="1" value="20"></label>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric featured"><span>Pérdida restante hasta el límite</span><strong id="remainingLoss">$500 MXN</strong><small>si llega a $0, la sesión termina</small></div>
+        <div class="metric"><span>Pausas previstas</span><strong id="breakCount">2</strong><small id="breakSchedule">a los 20 y 40 minutos</small></div>
+      </div>
+
+      <div id="planStatus" class="status warn" role="status"></div>
+      <div class="timer" aria-live="polite">
+        <span>Tiempo restante</span>
+        <strong id="timerDisplay">01:00:00</strong>
+        <small id="timerMessage">El temporizador todavía no ha comenzado.</small>
+      </div>
+      <div class="tool-actions">
+        <button class="button primary" id="startTimer" type="button">Iniciar temporizador</button>
+        <button class="button secondary" id="pauseTimer" type="button" disabled>Pausar</button>
+        <button class="button secondary" id="resetTimer" type="button">Reiniciar</button>
+        <button class="button secondary" id="copyPlan" type="button">Copiar mi plan</button>
+      </div>
+      <p class="privacy-note">El plan y el temporizador funcionan solo en este navegador. No se crea una cuenta ni se envían datos.</p>
+    </section>
+
+    <div class="notice"><strong>El límite no es una meta de gasto.</strong> Es un máximo que no debe superarse. No aumentes el límite para recuperar pérdidas y no uses dinero reservado para vivienda, comida, facturas, ahorro o deudas.</div>
+
+    <h2>Cuándo conviene no iniciar la sesión</h2>
+    <ul>
+      <li>Quieres recuperar dinero perdido anteriormente.</li>
+      <li>Te sentirías obligado a ocultar el gasto o el tiempo dedicado.</li>
+      <li>Necesitas pedir dinero, usar crédito o posponer una factura.</li>
+      <li>Estás alterado, bajo efectos de alcohol u otras sustancias o no puedes aceptar perder el importe completo.</li>
+    </ul>
+
+    <section class="help-panel">
+      <p class="eyebrow">AYUDA GRATUITA EN MÉXICO</p>
+      <h2>Si parar ya no depende de un temporizador</h2>
+      <p>La Secretaría de Salud de México identifica continuar apostando pese a pérdidas económicas, familiares o laborales como una señal de alerta. Línea de la Vida ofrece orientación gratuita y confidencial, las 24 horas.</p>
+      <a class="button primary" href="tel:8009112000">800&nbsp;911&nbsp;2000</a>
+      <p class="privacy-note">Este sitio no pertenece a Línea de la Vida y no recibe información sobre la llamada.</p>
+    </section>
+
+    <div class="sources">
+      <h2>Fuentes</h2>
+      <p><a href="https://www.ordenacionjuego.es/en/node/2716" rel="noopener noreferrer" target="_blank">DGOJ: configuración previa del tiempo y pérdida máxima por sesión</a></p>
+      <p><a href="https://www.gob.mx/salud/prensa/216-conasama-llama-a-prevenir-el-trastorno-por-juegos-de-apuestas-mediante-informacion-y-atencion-oportuna?idiom=es" rel="noopener noreferrer" target="_blank">Secretaría de Salud de México: señales de alerta y Línea de la Vida</a></p>
+      <p class="source-note">La herramienta no diagnostica un trastorno ni sustituye la atención profesional. Su objetivo es convertir un límite decidido previamente en una referencia visible.</p>
+    </div>
+  </main>
+  <footer><p><strong>18+ · Juega responsablemente.</strong> Si el juego causa daño, la opción más segura es detenerse y pedir ayuda.</p></footer>
+  <script>
+    const limitFields = ['lossLimit','alreadyLost','duration','breakEvery'];
+    const money = value => new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(value);
+    const num = id => Math.max(0, Number(document.getElementById(id).value) || 0);
+    let remainingSeconds = 3600;
+    let sessionSeconds = 3600;
+    let deadline = 0;
+    let timerId = null;
+    let nextBreakAt = 1200;
+    let planText = '';
+
+    function formatTime(seconds) {
+      const safe = Math.max(0, Math.ceil(seconds));
+      const hours = Math.floor(safe / 3600);
+      const minutes = Math.floor((safe % 3600) / 60);
+      const secs = safe % 60;
+      return [hours,minutes,secs].map(value => String(value).padStart(2,'0')).join(':');
+    }
+
+    function renderPlan(resetClock = true) {
+      const lossLimit = num('lossLimit');
+      const alreadyLost = num('alreadyLost');
+      const duration = Math.max(1, num('duration') || 1);
+      const breakEvery = Math.max(1, num('breakEvery') || 1);
+      const remainingLoss = Math.max(0, lossLimit - alreadyLost);
+      const breaks = breakEvery < duration ? Math.floor((duration - 0.001) / breakEvery) : 0;
+      const schedule = Array.from({length:breaks},(_,index) => (index + 1) * breakEvery);
+
+      document.getElementById('remainingLoss').textContent = money(remainingLoss);
+      document.getElementById('breakCount').textContent = new Intl.NumberFormat('es-MX').format(breaks);
+      document.getElementById('breakSchedule').textContent = breaks ? 'a los ' + schedule.join(', ') + ' minutos' : 'no hay pausas antes del final';
+      const status = document.getElementById('planStatus');
+      const start = document.getElementById('startTimer');
+      if (lossLimit === 0 || alreadyLost >= lossLimit) {
+        status.className = 'status bad';
+        status.textContent = 'El límite ya está alcanzado. No inicies ni continúes la sesión.';
+        start.disabled = true;
+      } else {
+        status.className = 'status warn';
+        status.textContent = 'Plan: detenerse al perder ' + money(lossLimit) + ' en total o al cumplir ' + duration + ' minuto' + (duration === 1 ? '' : 's') + ', lo que ocurra primero.';
+        start.disabled = false;
+      }
+
+      planText = 'Mi límite de sesión\nPérdida máxima total: ' + money(lossLimit) + '\nPérdida ya acumulada: ' + money(alreadyLost) + '\nMargen restante: ' + money(remainingLoss) + '\nDuración máxima: ' + duration + ' minutos\nPausa cada: ' + breakEvery + ' minutos\nRegla: detenerme cuando alcance cualquiera de los dos límites y no aumentar el límite para recuperar pérdidas.';
+      if (resetClock) {
+        stopInterval();
+        sessionSeconds = duration * 60;
+        remainingSeconds = sessionSeconds;
+        nextBreakAt = breakEvery * 60;
+        document.getElementById('timerDisplay').textContent = formatTime(remainingSeconds);
+        document.getElementById('timerMessage').textContent = 'El temporizador todavía no ha comenzado.';
+        document.getElementById('pauseTimer').disabled = true;
+        document.getElementById('pauseTimer').textContent = 'Pausar';
+        start.textContent = 'Iniciar temporizador';
+      }
+    }
+
+    function stopInterval() {
+      if (timerId) clearInterval(timerId);
+      timerId = null;
+    }
+
+    function tick() {
+      remainingSeconds = Math.max(0, (deadline - Date.now()) / 1000);
+      document.getElementById('timerDisplay').textContent = formatTime(remainingSeconds);
+      const elapsed = sessionSeconds - remainingSeconds;
+      if (remainingSeconds <= 0) {
+        stopInterval();
+        document.getElementById('timerMessage').textContent = 'Tiempo terminado. Cierra la sesión.';
+        document.getElementById('planStatus').className = 'status bad';
+        document.getElementById('planStatus').textContent = 'Se alcanzó el límite de tiempo decidido previamente.';
+        document.getElementById('startTimer').disabled = true;
+        document.getElementById('pauseTimer').disabled = true;
+      } else if (elapsed >= nextBreakAt && nextBreakAt < sessionSeconds) {
+        stopInterval();
+        nextBreakAt += Math.max(1, num('breakEvery')) * 60;
+        document.getElementById('timerMessage').textContent = 'Pausa programada. Aléjate de la pantalla antes de decidir si continúas.';
+        document.getElementById('pauseTimer').textContent = 'Continuar';
+      }
+    }
+
+    function startOrResume() {
+      if (remainingSeconds <= 0) return;
+      deadline = Date.now() + remainingSeconds * 1000;
+      stopInterval();
+      timerId = setInterval(tick, 250);
+      document.getElementById('timerMessage').textContent = 'Temporizador activo.';
+      document.getElementById('startTimer').textContent = 'Temporizador activo';
+      document.getElementById('startTimer').disabled = true;
+      document.getElementById('pauseTimer').disabled = false;
+      document.getElementById('pauseTimer').textContent = 'Pausar';
+    }
+
+    limitFields.forEach(id => document.getElementById(id).addEventListener('input', () => renderPlan(true)));
+    document.getElementById('startTimer').addEventListener('click', startOrResume);
+    document.getElementById('pauseTimer').addEventListener('click', event => {
+      if (timerId) {
+        remainingSeconds = Math.max(0, (deadline - Date.now()) / 1000);
+        stopInterval();
+        document.getElementById('timerMessage').textContent = 'Temporizador en pausa.';
+        event.currentTarget.textContent = 'Continuar';
+      } else {
+        startOrResume();
+      }
+    });
+    document.getElementById('resetTimer').addEventListener('click', () => renderPlan(true));
+    document.getElementById('copyPlan').addEventListener('click', async event => {
+      await navigator.clipboard.writeText(planText);
+      event.currentTarget.textContent = 'Plan copiado';
+      setTimeout(() => event.currentTarget.textContent = 'Copiar mi plan', 1600);
+    });
+    renderPlan(true);
+  </script>
+</body>
+</html>
